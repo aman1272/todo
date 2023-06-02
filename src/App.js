@@ -6,7 +6,6 @@ function App() {
 
   const addTask = (index) => {
     if (newTask.trim() !== "") {
-      console.log("step")
 
       const updatedTasks = [...tasks, { description: newTask, completed: false }];
       updatedTasks.splice(index, 1)
@@ -14,7 +13,6 @@ function App() {
       setNewTask('')
     }
   }
-  console.log("task",newTask)
 
 
   const deleteTask = (index) => {

@@ -1,40 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-function App() {
-  const [tasks, setTask] = useState([])
-  const [newTask, setNewTask] = useState('')
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState('');
 
-  const addTask = (index) => {
-    if (newTask.trim() !== "") {
-
+  // Function to add a new task
+  const addTask = () => {
+    if (newTask.trim() !== '') {
       const updatedTasks = [...tasks, { description: newTask, completed: false }];
-      updatedTasks.splice(index, 1)
-      setTask(updatedTasks)
-      setNewTask('')
+      setTasks(updatedTasks);
+      setNewTask('');
     }
-  }
+  };
 
-
-  const deleteTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1)
-    setTask(updatedTasks)
-  }
-
+  // Function to mark a task as completed
   const completeTask = (index) => {
     const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed
-    setTask(updatedTasks)
-  }
+    updatedTasks[index].completed = !updatedTasks[index].completed;
+    setTasks(updatedTasks);
+  };
+
+  // Function to delete a task
+  const deleteTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
 
   return (
     <div>
-      <h1>Total Task</h1>
-      <h1>Completed Task</h1>
-      <input type='text' value={newTask} onChange={(e) => { setNewTask(e.target.value) }} />
-      <button onClick={addTask}>Add Tasks</button>
+      <h2>Total Tasks: {tasks.length}</h2>
+      <h2>Completed Tasks: {tasks.filter(task => task.completed).length}</h2>
+      <input
+        type="text"
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+      />
+      <button onClick={addTask}>Add Task</button>
       <ul>
-        {tasks.map((task, index) => {
+        {tasks.map((task, index) => (
           <TodoItem
             key={index}
             index={index}
@@ -42,23 +46,31 @@ function App() {
             completeTask={completeTask}
             deleteTask={deleteTask}
           />
-        })}
+        ))}
       </ul>
     </div>
   );
-}
+};
 
+// TodoItem component
 const TodoItem = ({ index, task, completeTask, deleteTask }) => {
   return (
-    <>
-      <li>
-        <input type="checkbox" checked={task.completed} onChange={completeTask(index)} />
-        <span  >{task.description}</span>
-        <button onClick={deleteTask(index)}>Delete Task</button>
-      </li>
-
-    </>
-  )
-}
+    <li>
+      <input
+        type="checkbox"
+        checked={task.completed}
+        onChange={() => completeTask(index)}
+      />
+      <span
+        style={{
+          textDecoration: task.completed ? 'line-through' : 'none',
+        }}
+      >
+        {task.description}
+      </span>
+      <button onClick={() => deleteTask(index)}>Delete</button>
+    </li>
+  );
+};
 
 export default App;
